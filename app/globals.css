@@ -1,0 +1,268 @@
+:root {
+  --tomato: #d7301f;
+  --tomato-flesh: #fbeae4;
+  --basil: #356b42;
+  --basil-leaf: #e6efe3;
+  --ink: #22110d;
+  --ink-basil: #102415;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: var(--tomato-flesh);
+  color: var(--ink);
+  font-family: var(--font-text), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+.stage {
+  --ground: var(--tomato-flesh);
+  --paint: var(--tomato);
+  --on-ground: var(--ink);
+  --on-paint: var(--tomato-flesh);
+  position: relative;
+  height: 100dvh;
+  transition: background-color 0.6s ease;
+}
+
+.stage.pausa {
+  --ground: var(--basil-leaf);
+  --paint: var(--basil);
+  --on-ground: var(--ink-basil);
+  --on-paint: var(--basil-leaf);
+}
+
+.layer {
+  position: absolute;
+  inset: 0;
+}
+
+.ground {
+  background: var(--ground);
+  color: var(--on-ground);
+}
+
+.fill {
+  background: var(--paint);
+  color: var(--on-paint);
+  pointer-events: none;
+  transition: clip-path 0.3s linear, background-color 0.6s ease;
+}
+
+.face {
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  grid-template-columns: minmax(0, 1fr);
+  padding: clamp(16px, 4vw, 48px);
+}
+
+/* Top line: phase name and today's tally */
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  font-size: 1.0625rem;
+}
+
+.phase {
+  font-weight: 600;
+}
+
+.tally {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.875rem;
+  opacity: 0.75;
+}
+
+.tally i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.more {
+  margin-left: 4px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The clock is the whole page */
+
+.clock {
+  align-self: end;
+  font-family: var(--font-display), sans-serif;
+  font-weight: 800;
+  font-size: min(62dvh, 38vw);
+  line-height: 0.78;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+  margin-left: -0.04em;
+  padding-bottom: clamp(16px, 3vh, 32px);
+  user-select: none;
+}
+
+/* Controls */
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 28px;
+  align-items: center;
+}
+
+.controls button {
+  appearance: none;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-size: 1rem;
+  padding: 10px 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  border-bottom: 2px solid transparent;
+}
+
+.controls button.primary {
+  font-weight: 600;
+  border-bottom-color: currentColor;
+}
+
+.controls button:hover {
+  border-bottom-color: currentColor;
+}
+
+.controls button:focus-visible,
+.controls button.is-focused {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+.controls button:focus:not(:focus-visible) {
+  outline: none;
+}
+
+kbd {
+  font: inherit;
+  font-size: 0.75rem;
+  opacity: 0.6;
+}
+
+/* Settings: sits above both layers, drawn in the ground colors */
+
+.settings {
+  position: absolute;
+  z-index: 1;
+  right: clamp(16px, 4vw, 48px);
+  bottom: clamp(64px, 10vh, 112px);
+  display: grid;
+  gap: 14px;
+  padding: 20px 22px;
+  background: var(--ground);
+  color: var(--on-ground);
+  border: 2px solid currentColor;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.settings label {
+  display: grid;
+  grid-template-columns: 4.5em 5em auto;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.settings input {
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid currentColor;
+  padding: 4px 2px;
+  width: 100%;
+}
+
+.settings input:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
+.unit {
+  font-size: 0.875rem;
+  opacity: 0.75;
+}
+
+.settings-actions {
+  display: flex;
+  gap: 20px;
+  margin-top: 4px;
+}
+
+.settings-actions button {
+  appearance: none;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  padding: 6px 0;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+}
+
+.settings-actions button.primary {
+  font-weight: 600;
+  border-bottom-color: currentColor;
+}
+
+.settings-actions button:hover {
+  border-bottom-color: currentColor;
+}
+
+.settings-actions button:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+}
+
+@media (max-width: 560px) {
+  .settings {
+    left: 16px;
+    right: 16px;
+    bottom: 72px;
+  }
+
+  .controls {
+    gap: 4px 20px;
+  }
+  kbd {
+    display: none;
+  }
+  .none {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stage,
+  .fill {
+    transition: none;
+  }
+}
